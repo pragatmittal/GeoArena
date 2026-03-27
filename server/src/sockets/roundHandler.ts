@@ -30,6 +30,11 @@ export function registerRoundHandlers(io: Server, socket: Socket) {
       gameState.questions = selectedQs;
       gameState.currentRoundIndex = 0;
       
+      if (selectedQs.length === 0) {
+        io.to(roomId).emit('error', { message: `No questions found for difficulty: ${difficulty}. Please seed the database.` });
+        return;
+      }
+
       startRound(io, roomId, gameState, roomDoc.settings.roundDuration);
 
       io.to(roomId).emit('game_started', { 
@@ -93,6 +98,12 @@ function startRound(io: Server, roomId: string, gameState: GameState, duration: 
   
   const q = gameState.questions[gameState.currentRoundIndex];
   
+  if (!q) {
+    console.error(`Question at index ${gameState.currentRoundIndex} is undefined for room ${roomId}`);
+    io.to(roomId).emit('error', { message: 'Failed to start round: Question not found.' });
+    return;
+  }
+
   io.to(roomId).emit('round_started', {
     roundIndex: gameState.currentRoundIndex,
     totalRounds: gameState.questions.length,

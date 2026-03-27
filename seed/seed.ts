@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 
-const MONGO_URI = 'mongodb://localhost:27017/geoquiz';
+const MONGO_URI = 'mongodb+srv://pragatmittal:UnPIsTSFvPNGSlqq@cluster0.wu2rf.mongodb.net/GeoArena';
 
 const questionSchema = new mongoose.Schema({
   name: String,

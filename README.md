@@ -22,23 +22,18 @@ GeoArena is a real-time multiplayer geography quiz game where players compete to
 Before you begin, ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v16.x or later)
 - [npm](https://www.npmjs.com/) (usually comes with Node.js)
-- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
 
 ## ⚙️ Setup Instructions
 
 ### 1. Database (MongoDB)
-Start the MongoDB service using Docker Compose:
-```bash
-docker-compose up -d
-```
+This project uses **MongoDB Atlas**. Ensure your `MONGO_URI` is correctly configured in your server's `.env` file. You do not need to run a local MongoDB instance.
 
 ### 2. Seed Data
 Populate the database with initial geography questions:
 ```bash
 cd seed
 npm install
-npm build # if applicable, then npm start or:
-npx ts-node seed.ts
+npm run seed
 cd ..
 ```
 
@@ -70,7 +65,6 @@ Open your browser at `http://localhost:5173` to start playing!
 - `client/`: Preact-based frontend application with Leaflet integration.
 - `server/`: Express & Socket.io backend handling game logic and rooms.
 - `seed/`: Utility scripts to populate the database with question data.
-- `docker-compose.yml`: Docker configuration for local services (MongoDB).
 
 ## 🤝 Contributing
 
