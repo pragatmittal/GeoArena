@@ -79,6 +79,3 @@ Open your browser at `http://localhost:5173` to start playing!
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
 4. Push to the branch (`git checkout origin feature/AmazingFeature`).
 5. Open a Pull Request.
-
----
-Built with ❤️ by the GeoArena Team.
