@@ -42,8 +42,6 @@ const io = new Server(server, {
   }
 } as any);
 
-// Handle preflight for all routes
-app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 
