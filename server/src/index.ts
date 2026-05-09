@@ -17,17 +17,34 @@ const app = express();
 const server = http.createServer(app);
 
 const allowedOrigins = process.env.CLIENT_ORIGIN
-  ? [process.env.CLIENT_ORIGIN]
+  ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim())
   : ['http://localhost:5173', 'http://localhost:5174'];
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
 
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
-    methods: ['GET', 'POST']
+    methods: ['GET', 'POST'],
+    credentials: true,
   }
 } as any);
 
-app.use(cors({ origin: allowedOrigins }));
+// Handle preflight for all routes
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/api/questions', questionsRouter);
