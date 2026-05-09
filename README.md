@@ -19,7 +19,7 @@
 
 ---
 
-## ⚠️ Known Limitations (Honest)
+## ⚠️  Limitations 
 
 - **No authentication** — usernames are just strings, there is no account system
 - **Host-only controls** — only the room creator can start the game and advance rounds; if the host disconnects, the next player becomes the host automatically
