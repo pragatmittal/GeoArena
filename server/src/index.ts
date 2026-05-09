@@ -16,9 +16,16 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigins = process.env.CLIENT_ORIGIN
+// Normalize origins: auto-add https:// if protocol is missing (e.g. "geo-arena-nu.vercel.app" → "https://geo-arena-nu.vercel.app")
+const rawOrigins = process.env.CLIENT_ORIGIN
   ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim())
   : ['http://localhost:5173', 'http://localhost:5174'];
+
+const allowedOrigins = rawOrigins.map((o) =>
+  o.startsWith('http://') || o.startsWith('https://') ? o : `https://${o}`
+);
+
+console.log('Allowed CORS origins:', allowedOrigins);
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
@@ -26,6 +33,7 @@ const corsOptions = {
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error(`CORS blocked: ${origin} | Allowed: ${allowedOrigins.join(', ')}`);
       callback(new Error(`CORS: origin ${origin} not allowed`));
     }
   },
